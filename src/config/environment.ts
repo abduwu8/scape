@@ -11,7 +11,7 @@ export const config = {
   },
   browserless: {
     apiKey: process.env.BROWSERLESS_API_KEY,
-    url: process.env.BROWSERLESS_URL || 'https://chrome.browserless.io',
+    url: process.env.BROWSERLESS_URL || 'wss://chrome.browserless.io',
   },
   security: {
     rateLimitWindowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 900000, // 15 minutes
