@@ -1,4 +1,4 @@
-import puppeteer, { Page, Browser } from 'puppeteer-core';
+import puppeteer, { ElementHandle, Page } from 'puppeteer-core';
 import { config } from '../config/environment';
 
 export interface JobData {
@@ -13,19 +13,17 @@ export interface JobData {
 }
 
 class LinkedInService {
-  private async initializeBrowser(): Promise<{ browser: Browser; page: Page }> {
+  private readonly browserWSEndpoint: string;
+
+  constructor() {
+    this.browserWSEndpoint = `${config.browserless.url}?token=${config.browserless.apiKey}`;
+  }
+
+  private async initializeBrowser() {
     try {
-      const browser = await puppeteer.launch({
-        headless: true,
-        executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe', // Windows Chrome path
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--disable-dev-shm-usage',
-          '--disable-accelerated-2d-canvas',
-          '--disable-gpu',
-          '--window-size=1920x1080',
-        ],
+      const browser = await puppeteer.connect({
+        browserWSEndpoint: this.browserWSEndpoint,
+        defaultViewport: { width: 1920, height: 1080 },
       });
 
       const page = await browser.newPage();
@@ -35,9 +33,6 @@ class LinkedInService {
       await page.setExtraHTTPHeaders({
         'Accept-Language': 'en-US,en;q=0.9',
       });
-
-      // Set viewport
-      await page.setViewport({ width: 1920, height: 1080 });
 
       return { browser, page };
     } catch (error) {

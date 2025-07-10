@@ -9,6 +9,10 @@ export const config = {
     port: process.env.PORT || 3000,
     nodeEnv: process.env.NODE_ENV || 'development',
   },
+  browserless: {
+    apiKey: process.env.BROWSERLESS_API_KEY,
+    url: process.env.BROWSERLESS_URL || 'https://chrome.browserless.io',
+  },
   security: {
     rateLimitWindowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 900000, // 15 minutes
     rateLimitMaxRequests: Number(process.env.RATE_LIMIT_MAX_REQUESTS) || 100,
